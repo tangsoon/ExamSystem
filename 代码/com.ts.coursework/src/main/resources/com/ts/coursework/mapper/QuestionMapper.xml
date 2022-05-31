@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.coursework.mapper.QuestionMapper">
+	
+	<resultMap id="QuestionMap" type="com.ts.coursework.entity.Question">
+		<id column="id" property="id"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="type" property="type"/>
+        <result column="score" property="score"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+        <result column="content_id" property="contentId"/>
+        <result column="subjectName" property="subjectName"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+	</resultMap>
+	
+	<insert id="addQuestion">
+    	insert into question(id,subject_id,type,score,name,status,content_id,userId) 
+		values(id,#{subjectId},#{type},#{score},#{name},#{status},#{contentId},#{userId})
+    </insert>
+    
+    <delete id="delQuestion">
+    	DELETE from question
+		where id=#{id}
+    </delete>
+    
+    <update id="updateQuestion">
+    	update question SET
+		id=#{id},
+		subject_id=#{subjectId},
+		type=#{type},
+		score=#{score},
+		name=#{name},
+		status=#{status},
+		content_id=#{contentId}
+		where id=#{id}
+    </update>
+    
+    <select id="getQuestionById" resultMap="QuestionMap">
+       	SELECT  question.id,subject_id,`subject`.name as subjectName,type,score,question.name ,status,content_id, question.userId,`user`.name userName
+		from question,user,subject
+		where question.userId=`user`.id and question.subject_id=`subject`.id and question.id=#{id}
+    </select>
+    
+    <select id="getAllQuestions" resultMap="QuestionMap">
+        SELECT  question.id,subject_id,`subject`.name as subjectName,type,score,question.name ,status,content_id, question.userId,`user`.name userName
+		from question,user,subject
+		where question.userId=`user`.id and question.subject_id=`subject`.id
+    </select>
+    
+    <select id="getQuestionsByExamPaperId" resultMap="QuestionMap">
+		select question.id,subject_id,`subject`.name as subjectName,type,score,question.name ,status,content_id, question.userId,`user`.name userName  
+		from question,exam_paper_question_map,subject,user
+		where question_id=question.id and exam_paper_question_map.exam_paper_id=#{examPaperId} and question.userId=`user`.id and question.subject_id=`subject`.id
+    </select>
+    
+    <select id="getQuestionsBySubjectId" resultMap="QuestionMap">
+		select question.id,subject_id,`subject`.name as subjectName,type,score,question.name ,status,content_id, question.userId,`user`.name userName  
+		from question,subject,user
+		where `subject`.id=#{subjectId} and question.subject_id=`subject`.id and question.userId=`user`.id
+    </select>
+    
+</mapper>

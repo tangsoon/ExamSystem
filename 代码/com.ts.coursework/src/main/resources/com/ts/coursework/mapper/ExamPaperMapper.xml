@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.coursework.mapper.ExamPaperMapper">
+	
+	<resultMap id="ExamPaperMap" type="com.ts.coursework.entity.ExamPaper">
+		<id column="id" property="id"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="title" property="title"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="subject_name" property="subjectName"/>
+        <result column="user_name" property="userName"/>
+	</resultMap>
+	
+	<insert id="addExamPaper" useGeneratedKeys="true" keyProperty="id">
+    	insert into exam_paper(id,subject_id,title,user_id,status) 
+		values(id,#{subjectId},#{title},#{userId},#{status})
+    </insert>
+    
+    <delete id="delExamPaper">
+    	DELETE from exam_paper
+		where id=#{id}
+    </delete>
+    
+    <update id="updateExamPaper">
+    	update exam_paper SET
+		id=#{id},
+		subject_id=#{subjectId},
+		title=#{title},
+		user_id=#{userId},
+		status=#{status}
+		where id=#{id}
+    </update>
+   
+    <select id="getExamPaperById" resultMap="ExamPaperMap">
+       SELECT  exam_paper.id,exam_paper.subject_id,exam_paper.title ,exam_paper.user_id,`user`.`name` user_name,`subject`.`name` subject_name,`status`
+		from exam_paper,user,`subject`
+		where exam_paper.id=#{id} and `user`.id=exam_paper.user_id and exam_paper.subject_id=`subject`.id
+    </select>
+    
+    <select id="getAllExamPaper" resultMap="ExamPaperMap">
+		SELECT  exam_paper.id,exam_paper.subject_id,exam_paper.title ,exam_paper.user_id,`user`.`name` user_name,`subject`.`name` subject_name,`status`
+		from exam_paper,user,`subject`
+		where `user`.id=exam_paper.user_id and exam_paper.subject_id=`subject`.id
+    </select>
+    
+    <select id="getExamPaperBySubjectId" resultMap="ExamPaperMap">
+SELECT  exam_paper.id,exam_paper.subject_id,exam_paper.title ,exam_paper.user_id,`user`.`name` user_name,`subject`.`name` subject_name,`status`
+		from exam_paper,user,`subject`
+		where `user`.id=exam_paper.user_id and exam_paper.subject_id=`subject`.id and `subject`.id=#{subjectId}
+    </select>
+</mapper>

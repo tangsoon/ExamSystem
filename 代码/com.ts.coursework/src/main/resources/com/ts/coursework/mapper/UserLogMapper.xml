@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.coursework.mapper.UserLogMapper">
+	
+	<resultMap id="UserLogMap" type="com.ts.coursework.entity.UserLog">
+        <result column="user_name" property="userName"/>
+        <result column="time" property="time"/>
+        <result column="operation" property="operation"/>
+	</resultMap>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id">
+    	insert into user_log(user_name,time,operation)
+		values(#{userName},#{time},#{operation})
+    </insert>
+    
+    <select id="getAll" resultMap="UserLogMap">
+        SELECT  *
+		from user_log
+    </select>
+    
+     <select id="getExamPaperSum" resultType="java.lang.Integer">
+      	SELECT COUNT(id) 
+		from exam_paper
+    </select>
+    
+    <select id="getQuestionSum" resultType="java.lang.Integer">
+      	SELECT COUNT(id) 
+		from question
+    </select>
+    
+    <select id="getAnswerSum" resultType="java.lang.Integer">
+      	SELECT COUNT(id) 
+		from user_answer
+    </select>
+    
+    <select id="getSubjectSum" resultType="java.lang.Integer">
+      	SELECT COUNT(id) 
+		from subject
+    </select>
+    
+</mapper>
